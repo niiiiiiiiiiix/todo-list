@@ -1,4 +1,5 @@
 import React from "react";
+import TodoItem from "./TodoItem";
 
 class TodoList extends React.Component {
   constructor(props) {
@@ -14,8 +15,9 @@ class TodoList extends React.Component {
   displayTodos() {
     return this.state.todos.map((todo) => (
       <div>
-        <span>{todo.name}</span>
-        <span>{todo.isDone ? " - completed" : " - not completed"}</span>
+        {/* <span>{todo.name}</span>
+        <span>{todo.isDone ? " - completed" : " - not completed"}</span> */}
+        <TodoItem name={todo.name} isDone={todo.isDone} />
       </div>
     ));
   }
