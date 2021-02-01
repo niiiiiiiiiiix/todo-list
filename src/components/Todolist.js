@@ -40,9 +40,22 @@ class TodoList extends React.Component {
       //   <TodoItem name={todo.name} isDone={todo.isDone} />
       // </div>
 
+      // delete function
+      const deleteTodo = () => {
+        const todosWithoutItem = this.state.todos.filter(
+          (todoToFilter) => todoToFilter.id !== todo.id
+        );
+        this.setState({ todos: [...todosWithoutItem] });
+      };
+
       // 5. pass in the method as a prop to Todo component
       return (
-        <TodoItem name={todo.name} isDone={todo.isDone} setTodo={setTodo} />
+        <TodoItem
+          name={todo.name}
+          isDone={todo.isDone}
+          setTodo={setTodo}
+          deleteTodo={deleteTodo}
+        />
       );
     });
   }
