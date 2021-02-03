@@ -1,73 +1,74 @@
-import React from "react";
+import React, { useState } from "react";
 import TodoItem from "./TodoItem";
 import { v4 as uuidv4 } from "uuid";
-// 1. import the UUID
+import TodoForm from "./TodoForm";
 
-class TodoList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      todos: [
-        {
-          id: uuidv4(),
-          // add uuid to the item
-          name: "Buy Milk",
-          isDone: false,
-        },
-        {
-          id: uuidv4(),
-          // add uuid to the item
-          name: "Do push up",
-          isDone: true,
-        },
-      ],
+const TodoList = () => {
+  const [todos, setTodos] = useState([
+    // initial state
+    {
+      id: uuidv4(),
+      name: "Buy milk",
+      isDone: false,
+    },
+    {
+      id: uuidv4(),
+      name: "Do push up",
+      isDone: true,
+    },
+  ]);
+
+  const toggleDone = (id) => {
+    // function that toggles done/not done (green tick)
+    const todoIndex = todos.findIndex((object) => object.id === id);
+    // findIndex returns the index of the first object in the todos array whereby object.id is equal to the position of the "id"
+    // in the example of id: uuidv4(), name:"Buy milk", isDone: false, this returns 1 because toggleDone is used in TodoItem.js where the item's actual id has been passed in
+    const updatedTodos = [...todos];
+    // create an array updatedTodos that is just todos
+    updatedTodos[todoIndex].isDone = !updatedTodos[todoIndex].isDone;
+    // each time this runs, it updates the isDone value to the opposite value (boolean)
+    setTodos(updatedTodos);
+    //
+  };
+
+  const deleteTodo = (id) => {
+    const updatedTodos = todos.filter((todo) => todo.id !== id);
+    setTodos(updatedTodos);
+  };
+
+  const addTodo = (name) => {
+    if (name.trim() === "") return;
+
+    const newTodo = {
+      id: uuidv4(),
+      name: name,
+      isDone: false,
     };
-  }
 
-  displayTodos() {
-    return this.state.todos.map((todo) => {
-      // 4. add a method that can change the status of isDone
-      const setTodo = (isDone) => {
-        const currentTodo = this.state.todos.filter(
-          (todoFilter) => todoFilter.id === todo.id
-        )[0];
-        currentTodo.isDone = isDone;
-        this.setState({ todos: [...this.state.todos] });
-      };
-      // <div>
-      //   {/* <span>{todo.name}</span>
-      //   <span>{todo.isDone ? " - completed" : " - not completed"}</span> */}
-      //   <TodoItem name={todo.name} isDone={todo.isDone} />
-      // </div>
+    setTodos([...todos, newTodo]);
+  };
 
-      // delete function
-      const deleteTodo = () => {
-        const todosWithoutItem = this.state.todos.filter(
-          (todoToFilter) => todoToFilter.id !== todo.id
-        );
-        this.setState({ todos: [...todosWithoutItem] });
-      };
+  const displayTodos = () => {
+    return todos.map((todo) => (
+      <TodoItem
+        name={todo.name}
+        isDone={todo.isDone}
+        key={todo.id}
+        id={todo.id}
+        toggleDone={toggleDone}
+        deleteTodo={deleteTodo}
+      />
+    ));
+  };
 
-      // 5. pass in the method as a prop to Todo component
-      return (
-        <TodoItem
-          name={todo.name}
-          isDone={todo.isDone}
-          setTodo={setTodo}
-          deleteTodo={deleteTodo}
-        />
-      );
-    });
-  }
-
-  render() {
-    return (
-      <div>
-        <div>Todolist</div>
-        <div>{this.displayTodos()}</div>
-      </div>
-    );
-  }
-}
+  return (
+    <React.Fragment>
+      <h1>TodoList</h1>
+      <div>{displayTodos()}</div>
+      <br></br>
+      <TodoForm addTodo={addTodo}></TodoForm>
+    </React.Fragment>
+  );
+};
 
 export default TodoList;
