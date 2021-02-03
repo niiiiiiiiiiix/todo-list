@@ -32,8 +32,11 @@ const TodoList = () => {
   };
 
   const deleteTodo = (id) => {
+    // function that deletes a todo item
     const updatedTodos = todos.filter((todo) => todo.id !== id);
+    // filter todos array based on the condition that is todo.id is not equal to "id" so that we – note that the second "id" is used in TodoItem.js where the item's actual id has been passed in.
     setTodos(updatedTodos);
+    // updates
   };
 
   const addTodo = (name) => {
