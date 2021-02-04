@@ -1,24 +1,24 @@
 import React, { useState } from "react";
 
-const TodoForm = ({ addTodo }) => {
-  const [name, setName] = useState("");
+const TodoPageForm = ({ addTodoPage }) => {
+  const [title, setTitle] = useState("");
 
   const handleChange = (e) => {
-    setName(e.target.value);
+    setTitle(e.target.value);
   };
 
   const handleAdd = (e) => {
     e.preventDefault();
-    addTodo(name);
-    setName("");
+    addTodoPage(title);
+    setTitle("");
   };
 
   return (
     <>
       <input
-        aria-label="todo-composer"
+        aria-label="todo-list-composer"
         type="type"
-        value={name}
+        value={title}
         onChange={handleChange}
       ></input>
       <button onClick={handleAdd}>Add</button>
@@ -26,4 +26,4 @@ const TodoForm = ({ addTodo }) => {
   );
 };
 
-export default TodoForm;
+export default TodoPageForm;

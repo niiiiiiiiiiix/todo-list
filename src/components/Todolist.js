@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import TodoItem from "./TodoItem";
 import { v4 as uuidv4 } from "uuid";
 import TodoForm from "./TodoForm";
+import "./TodoItem.css";
 
-const TodoList = () => {
+const TodoList = ({ title, deleteTodoPage, id }) => {
   const [todos, setTodos] = useState([
     // initial state
     {
@@ -28,18 +29,14 @@ const TodoList = () => {
     updatedTodos[todoIndex].isDone = !updatedTodos[todoIndex].isDone;
     // each time this runs, it updates the isDone value to the opposite value (boolean)
     setTodos(updatedTodos);
-    //
-  };
-
-  const deleteTodo = (id) => {
-    // function that deletes a todo item
-    const updatedTodos = todos.filter((todo) => todo.id !== id);
-    // filter todos array based on the condition that is todo.id is not equal to "id" so that we – note that the second "id" is used in TodoItem.js where the item's actual id has been passed in.
-    setTodos(updatedTodos);
-    // updates
+    // updates setTodos
   };
 
   const addTodo = (name) => {
+    // takes in a parameter name e.g. " Hello World "
+    // if after trimming parameter e.g. "Hello World"
+    // "Hello World" is not equal to empty string
+    // so will continue with the rest of the code
     if (name.trim() === "") return;
 
     const newTodo = {
@@ -49,6 +46,14 @@ const TodoList = () => {
     };
 
     setTodos([...todos, newTodo]);
+  };
+
+  const deleteTodo = (id) => {
+    // function that deletes a todo item
+    const updatedTodos = todos.filter((todo) => todo.id !== id);
+    // filter todos array based on the condition that is todo.id is not equal to "id" so that we – note that the second "id" is used in TodoItem.js where the item's actual id has been passed in.
+    setTodos(updatedTodos);
+    // updates
   };
 
   const displayTodos = () => {
@@ -65,12 +70,22 @@ const TodoList = () => {
   };
 
   return (
-    <React.Fragment>
-      <h1>TodoList</h1>
-      <div>{displayTodos()}</div>
-      <br></br>
-      <TodoForm addTodo={addTodo}></TodoForm>
-    </React.Fragment>
+    <>
+      <div className="container">
+        <br></br>
+        <br></br>
+        <h1>{title}</h1>
+        <span>Remove List</span>
+        <span onClick={() => deleteTodoPage(id)} className="todo-item__delete">
+          x
+        </span>
+        <div>
+          <TodoForm addTodo={addTodo}></TodoForm>
+        </div>
+
+        <div>{displayTodos()}</div>
+      </div>
+    </>
   );
 };
 
